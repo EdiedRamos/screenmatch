@@ -5,6 +5,8 @@ import com.aluracursos.screenmatch.model.SerieData;
 import com.aluracursos.screenmatch.service.APIConsumer;
 import com.aluracursos.screenmatch.service.DataConverter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -23,12 +25,15 @@ public class Main {
 
         System.out.println(serieData);
 
+        List<SeasonData> seasonsData = new ArrayList<>();
+
         for (int season = 1; season <= serieData.totalSeasons(); season++) {
 			var currentSeason = api.getData(currentURL.concat("&season=" + season));
 			var seasonData = converter.getData(currentSeason, SeasonData.class);
-			System.out.println("~~~~~ SEASON " + season + " ~~~~~");
-			System.out.println(seasonData);
-			System.out.println("~".repeat(10));
+            seasonsData.add(seasonData);
 		}
+
+//      Show all episode titles
+        seasonsData.forEach(season -> season.episodes().forEach(episode -> System.out.println(episode.title())));
     }
 }
