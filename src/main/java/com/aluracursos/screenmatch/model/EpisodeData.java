@@ -12,5 +12,5 @@ public record EpisodeData(
         @JsonAlias("Runtime")
         String duration,
         @JsonAlias("imdbRating")
-        Float rating
+        String rating
 ) {}

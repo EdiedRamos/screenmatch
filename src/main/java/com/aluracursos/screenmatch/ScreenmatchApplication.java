@@ -1,5 +1,6 @@
 package com.aluracursos.screenmatch;
 
+import com.aluracursos.screenmatch.model.EpisodeData;
 import com.aluracursos.screenmatch.model.SerieData;
 import com.aluracursos.screenmatch.service.APIConsumer;
 import com.aluracursos.screenmatch.service.DataConverter;
@@ -17,12 +18,17 @@ public class ScreenmatchApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		var api = new APIConsumer();
-		var mrRobot = api.getData("http://www.omdbapi.com/?apikey=9a9b70da&t=mr+robot");
+		var converter = new DataConverter();
+
 //		var fakeUsers = api.getData("https://jsonplaceholder.typicode.com/users");
 //		System.out.println(fakeUsers);
 
-		var converter = new DataConverter();
+		var mrRobot = api.getData("http://www.omdbapi.com/?apikey=9a9b70da&t=mr+robot");
 		var data = converter.getData(mrRobot, SerieData.class);
 		System.out.println(data);
+
+		var mrRobotEpisode = api.getData("http://www.omdbapi.com/?apikey=9a9b70da&t=mr+robot&season=1&episode=1");
+		var data2 = converter.getData(mrRobotEpisode, EpisodeData.class);
+		System.out.println(data2);
 	}
 }
