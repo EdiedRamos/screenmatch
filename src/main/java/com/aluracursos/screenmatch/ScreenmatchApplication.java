@@ -1,6 +1,7 @@
 package com.aluracursos.screenmatch;
 
 import com.aluracursos.screenmatch.model.EpisodeData;
+import com.aluracursos.screenmatch.model.SeasonData;
 import com.aluracursos.screenmatch.model.SerieData;
 import com.aluracursos.screenmatch.service.APIConsumer;
 import com.aluracursos.screenmatch.service.DataConverter;
@@ -24,11 +25,23 @@ public class ScreenmatchApplication implements CommandLineRunner {
 //		System.out.println(fakeUsers);
 
 		var mrRobot = api.getData("http://www.omdbapi.com/?apikey=9a9b70da&t=mr+robot");
-		var data = converter.getData(mrRobot, SerieData.class);
-		System.out.println(data);
+		var mrRobotData = converter.getData(mrRobot, SerieData.class);
+//		System.out.println(mrRobotData);
 
-		var mrRobotEpisode = api.getData("http://www.omdbapi.com/?apikey=9a9b70da&t=mr+robot&season=1&episode=1");
-		var data2 = converter.getData(mrRobotEpisode, EpisodeData.class);
-		System.out.println(data2);
+//		var mrRobotEpisode = api.getData("http://www.omdbapi.com/?apikey=9a9b70da&t=mr+robot&season=1&episode=1");
+//		var data2 = converter.getData(mrRobotEpisode, EpisodeData.class);
+//		System.out.println(data2);
+
+//		var mrRobotSeason = api.getData("http://www.omdbapi.com/?apikey=9a9b70da&t=mr+robot&season=1");
+//		var data3 = converter.getData(mrRobotSeason, SeasonData.class);
+//		System.out.println(data3);
+
+		for (int season = 1; season <= mrRobotData.totalSeasons(); season++) {
+			var currentSeason = api.getData("http://www.omdbapi.com/?apikey=9a9b70da&t=mr+robot&season=" + season);
+			var seasonData = converter.getData(currentSeason, SeasonData.class);
+			System.out.println("~~~~~ SEASON " + season + " ~~~~~");
+			System.out.println(seasonData);
+			System.out.println("~".repeat(10));
+		}
 	}
 }
