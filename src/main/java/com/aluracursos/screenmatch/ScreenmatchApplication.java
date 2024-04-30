@@ -1,6 +1,7 @@
 package com.aluracursos.screenmatch;
 
 import com.aluracursos.screenmatch.main.Main;
+import com.aluracursos.screenmatch.main.StreamExamples;
 import com.aluracursos.screenmatch.model.EpisodeData;
 import com.aluracursos.screenmatch.model.SeasonData;
 import com.aluracursos.screenmatch.model.SerieData;
@@ -19,7 +20,10 @@ public class ScreenmatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		var main = new Main();
-		main.showMenu();
+//		var main = new Main();
+//		main.showMenu();
+
+		var streamExamples = new StreamExamples();
+		streamExamples.example();
 	}
 }
