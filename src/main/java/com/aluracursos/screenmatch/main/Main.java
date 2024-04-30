@@ -7,6 +7,8 @@ import com.aluracursos.screenmatch.model.SerieData;
 import com.aluracursos.screenmatch.service.APIConsumer;
 import com.aluracursos.screenmatch.service.DataConverter;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -45,8 +47,8 @@ public class Main {
         List<EpisodeData> episodeData = seasonsData.stream().flatMap(t -> t.episodes().stream()).collect(Collectors.toList());
 
 //        Top 5 episodes
-        System.out.println("️️✔️TOP 5 EPISODES✔️");
-        episodeData.stream().sorted(Comparator.comparing(EpisodeData::rating).reversed()).limit(5).forEach(System.out::println);
+//        System.out.println("️️✔️TOP 5 EPISODES✔️");
+//        episodeData.stream().sorted(Comparator.comparing(EpisodeData::rating).reversed()).limit(5).forEach(System.out::println);
 
 
 //        Set Episode
@@ -55,5 +57,20 @@ public class Main {
                         .map(e -> new Episode(e.episode(), e))).collect(Collectors.toList());
 
         episode.forEach(System.out::println);
+
+//        Filter by date
+        System.out.println("Año de lanzamiento: ");
+        int year = scanner.nextInt();
+        scanner.nextLine();
+        LocalDate startYear = LocalDate.of(year, 1, 1);
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        episode.stream()
+                .filter(e -> e.getRelease() != null &&  e.getRelease().isAfter(startYear))
+                .forEach(e -> System.out.println(
+                        "Title: " + e.getTitle()
+                        + "\nRelease: " + e.getRelease().format(dateTimeFormatter)
+                ));
     }
 }
