@@ -20,10 +20,10 @@ public class ScreenmatchApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//		var main = new Main();
-//		main.showMenu();
+		var main = new Main();
+		main.showMenu();
 
-		var streamExamples = new StreamExamples();
-		streamExamples.example();
+//		var streamExamples = new StreamExamples();
+//		streamExamples.example();
 	}
 }
