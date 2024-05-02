@@ -75,5 +75,11 @@ public class Main {
                 .collect(Collectors.groupingBy(Episode::getSeason, Collectors.averagingDouble(Episode::getRating)));
 
         System.out.println(seasonAverage);
+
+        DoubleSummaryStatistics est = episode.stream()
+                .filter(e -> e.getRating() > 0.0)
+                .collect(Collectors.summarizingDouble(Episode::getRating));
+
+        System.out.println(est);
     }
 }
