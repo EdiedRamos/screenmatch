@@ -9,10 +9,7 @@ import com.aluracursos.screenmatch.service.DataConverter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -44,7 +41,7 @@ public class Main {
 
 //      Set episode data
 
-        List<EpisodeData> episodeData = seasonsData.stream().flatMap(t -> t.episodes().stream()).collect(Collectors.toList());
+//        List<EpisodeData> episodeData = seasonsData.stream().flatMap(t -> t.episodes().stream()).collect(Collectors.toList());
 
 //        Top 5 episodes
 //        System.out.println("️️✔️TOP 5 EPISODES✔️");
@@ -55,22 +52,28 @@ public class Main {
         List<Episode> episode = seasonsData.
                 stream().flatMap(s -> s.episodes().stream()
                         .map(e -> new Episode(e.episode(), e))).collect(Collectors.toList());
-
-        episode.forEach(System.out::println);
+//
+//        episode.forEach(System.out::println);
 
 //        Filter by date
-        System.out.println("Año de lanzamiento: ");
-        int year = scanner.nextInt();
-        scanner.nextLine();
-        LocalDate startYear = LocalDate.of(year, 1, 1);
+//        System.out.println("Año de lanzamiento: ");
+//        int year = scanner.nextInt();
+//        scanner.nextLine();
+//        LocalDate startYear = LocalDate.of(year, 1, 1);
+//
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//
+//        episode.stream()
+//                .filter(e -> e.getRelease() != null &&  e.getRelease().isAfter(startYear))
+//                .forEach(e -> System.out.println(
+//                        "Title: " + e.getTitle()
+//                        + "\nRelease: " + e.getRelease().format(dateTimeFormatter)
+//                ));
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        Map<Integer, Double> seasonAverage = episode.stream()
+                .filter(e -> e.getRating() > 0.0)
+                .collect(Collectors.groupingBy(Episode::getSeason, Collectors.averagingDouble(Episode::getRating)));
 
-        episode.stream()
-                .filter(e -> e.getRelease() != null &&  e.getRelease().isAfter(startYear))
-                .forEach(e -> System.out.println(
-                        "Title: " + e.getTitle()
-                        + "\nRelease: " + e.getRelease().format(dateTimeFormatter)
-                ));
+        System.out.println(seasonAverage);
     }
 }
