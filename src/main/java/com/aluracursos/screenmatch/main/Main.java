@@ -1,9 +1,7 @@
 package com.aluracursos.screenmatch.main;
 
-import com.aluracursos.screenmatch.model.Episode;
-import com.aluracursos.screenmatch.model.EpisodeData;
-import com.aluracursos.screenmatch.model.SeasonData;
-import com.aluracursos.screenmatch.model.SerieData;
+import com.aluracursos.screenmatch.model.*;
+import com.aluracursos.screenmatch.repository.SeriesRepository;
 import com.aluracursos.screenmatch.service.APIConsumer;
 import com.aluracursos.screenmatch.service.DataConverter;
 
@@ -19,22 +17,56 @@ public class Main {
     private final APIConsumer api = new APIConsumer();
     private final DataConverter converter = new DataConverter();
 
+    private SeriesRepository seriesRepository;
+
+    public Main(SeriesRepository seriesRepository) {
+        this.seriesRepository = seriesRepository;
+    }
+
+    private void showAllSeries() {
+        List<Series> series = seriesRepository.findAll();
+        series.forEach(System.out::println);
+    }
+
+    private void saveSeries(SerieData serieData) {
+        Series series = new Series(serieData);
+        seriesRepository.save(series);
+    }
+
     public void showMenu() {
+
         System.out.println("Nombre de la serie:");
         String name = scanner.nextLine();
         var currentURL = BASE_URL.concat("&t=" + name.replace(" ", "+"));
         var serie = api.getData(currentURL);
+
+        System.out.println(serie);
+
         var serieData = converter.getData(serie, SerieData.class);
+
+        saveSeries(serieData);
+
+        System.out.println(serieData.genre());
+
+//        Double dd = OptionalDouble.of(Double.valueOf("null")).orElse(0);
+
+//        System.out.println(dd);
 
 //        System.out.println(serieData);
 
-        List<SeasonData> seasonsData = new ArrayList<>();
+//        System.out.println(serieData);
 
-        for (int season = 1; season <= serieData.totalSeasons(); season++) {
-            var currentSeason = api.getData(currentURL.concat("&season=" + season));
-            var seasonData = converter.getData(currentSeason, SeasonData.class);
-            seasonsData.add(seasonData);
-        }
+//        saveSeries(serieData);
+//
+//        System.out.println(serieData);
+
+//        List<SeasonData> seasonsData = new ArrayList<>();
+
+//        for (int season = 1; season <= serieData.totalSeasons(); season++) {
+//            var currentSeason = api.getData(currentURL.concat("&season=" + season));
+//            var seasonData = converter.getData(currentSeason, SeasonData.class);
+//            seasonsData.add(seasonData);
+//        }
 
 //      Show all episode titles
 //        seasonsData.forEach(season -> season.episodes().forEach(episode -> System.out.println(episode.title())));
@@ -49,9 +81,9 @@ public class Main {
 
 
 //        Set Episode
-        List<Episode> episode = seasonsData.
-                stream().flatMap(s -> s.episodes().stream()
-                        .map(e -> new Episode(e.episode(), e))).collect(Collectors.toList());
+//        List<Episode> episode = seasonsData.
+//                stream().flatMap(s -> s.episodes().stream()
+//                        .map(e -> new Episode(e.episode(), e))).collect(Collectors.toList());
 //
 //        episode.forEach(System.out::println);
 
@@ -70,16 +102,16 @@ public class Main {
 //                        + "\nRelease: " + e.getRelease().format(dateTimeFormatter)
 //                ));
 
-        Map<Integer, Double> seasonAverage = episode.stream()
-                .filter(e -> e.getRating() > 0.0)
-                .collect(Collectors.groupingBy(Episode::getSeason, Collectors.averagingDouble(Episode::getRating)));
-
-        System.out.println(seasonAverage);
-
-        DoubleSummaryStatistics est = episode.stream()
-                .filter(e -> e.getRating() > 0.0)
-                .collect(Collectors.summarizingDouble(Episode::getRating));
-
-        System.out.println(est);
+//        Map<Integer, Double> seasonAverage = episode.stream()
+//                .filter(e -> e.getRating() > 0.0)
+//                .collect(Collectors.groupingBy(Episode::getSeason, Collectors.averagingDouble(Episode::getRating)));
+//
+//        System.out.println(seasonAverage);
+//
+//        DoubleSummaryStatistics est = episode.stream()
+//                .filter(e -> e.getRating() > 0.0)
+//                .collect(Collectors.summarizingDouble(Episode::getRating));
+//
+//        System.out.println(est);
     }
 }
