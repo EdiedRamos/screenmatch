@@ -34,19 +34,30 @@ public class Main {
     }
 
     public void showMenu() {
-
-        System.out.println("Nombre de la serie:");
-        String name = scanner.nextLine();
-        var currentURL = BASE_URL.concat("&t=" + name.replace(" ", "+"));
-        var serie = api.getData(currentURL);
-
-        System.out.println(serie);
-
-        var serieData = converter.getData(serie, SerieData.class);
-
-        saveSeries(serieData);
-
-        System.out.println(serieData.genre());
+        String option = "~";
+        while (!option.equals("3")) {
+            System.out.println("1. Buscar series");
+            System.out.println("2. Ver todas las series");
+            System.out.println("3. Salir");
+            option = scanner.nextLine();
+            switch (option) {
+                case "1" -> {
+                    try {
+                        System.out.println("Nombre de la serie:");
+                        String name = scanner.nextLine();
+                        var currentURL = BASE_URL.concat("&t=" + name.replace(" ", "+"));
+                        var serie = api.getData(currentURL);
+                        System.out.println(serie);
+                        var serieData = converter.getData(serie, SerieData.class);
+                        saveSeries(serieData);
+                        System.out.println(serieData.genre());
+                    } catch(Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                }
+                case "2" -> showAllSeries();
+            }
+        }
 
 //        Double dd = OptionalDouble.of(Double.valueOf("null")).orElse(0);
 

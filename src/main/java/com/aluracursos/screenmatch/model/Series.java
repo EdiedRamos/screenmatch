@@ -15,7 +15,7 @@ public class Series {
     private Double rating;
     @Enumerated(EnumType.STRING)
     private Genre genre;
-    @Transient
+    @OneToMany(mappedBy = "series")
     private List<Episode> episodes;
 
     public Series() {}
@@ -77,6 +77,9 @@ public class Series {
 
     @Override
     public String toString() {
-        return "Id: " + id + "\nTitle: " + title + "\nTotal seasons: " + totalSeasons + "\nRating: " + rating + "\nGenre: " + genre;
+        return "~".repeat(10) +  "\nId: " + id + "\nTitle: " + title +
+                "\nTotal seasons: " + totalSeasons + "\nRating: " + rating +
+                "\nGenre: " + genre +
+                "\n" + "~".repeat(10) + "\n";
     }
 }
